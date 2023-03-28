@@ -1,35 +1,13 @@
-const { createAudioResource, AudioPlayerError, AudioPlayerStatus } = require('@discordjs/voice');
+const { createAudioResource, AudioPlayerStatus } = require('@discordjs/voice');
 const { Routes, Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityType, Partials } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const client = new Client({ intents: [GatewayIntentBits.GuildIntegrations, GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message ]});
 client.commands = new Collection();
-const token = "NjgwMDM0ODY0MzMzODQ4NTkz.Xk6B0g.Pw7MDDOYNEICDmF4ReyDdt0dIoo";
+const token = "";
 const ytdl = require("ytdl-core");
 const queue = new Map();
 const fs = require("fs");
 
-const readline = require('readline');
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-rl.on('line', function(line) {
-    if(line == "queue") return console.log(queue);
-    if(line == "exit") return process.exit(0);
-})
-
-
- process.on('uncaughtException', error => {
-   if(client.user.tag  == "MD BOT Dev#0490") return console.error(error);
-   console.log(`오류가 발생했어요.\n ${error}`)
- })
-
- process.on('unhandledRejection', error => {
-   if(client.user.tag == "MD BOT Dev#0490") return console.error(error);
-   console.log(`오류가 발생했어요.\n ${error}`)
- })
 client.on('ready', () => {
 
     const slashData = [];
@@ -51,20 +29,12 @@ client.on('ready', () => {
     (async () => {
         try {
         console.log("❗| 커맨드 등록이 진행중이에요.")
-    
-        if(client.user.tag == 'MD BOT Dev#0490') {
-            await rest.put(
-                Routes.applicationGuildCommands('680034864333848593', '937707674471133265'),
-                { body: slashData },
-            );
-        } else {
+
           await rest.put(
-            Routes.applicationCommands('952195219003174922'),
+            Routes.applicationCommands(client.author.id),
             { body: slashData },
           );
-        }
         console.log('🔨| '+ slashData.length + '개의 커맨드가 등록되었어요!')
-      //  require('./commands/made').MDload('code')
         
         } catch (error) {
             console.log("❎| 커맨드 등록에 실패했어요.")
@@ -73,7 +43,6 @@ client.on('ready', () => {
     })();
 
     console.log(`📶| ${client.user.tag}로 봇이 시작되었어요!`)
-    if(client.user.tag == 'MD BOT Dev#0490') console.log("⚠️ | 디버그 모드가 활성화 되었어요. 오류 발생시 ReStarter(이)가 실행되지 않도록 변경되었어요.")
     client.user.setActivity("안녕하세요!", { type: ActivityType.Streaming });
 })
 
@@ -82,14 +51,12 @@ client.on('interactionCreate', async (interaction) => {
     try {
         return require(client.commands.get(interaction.commandName)).execute(client , interaction, queue)
     } catch (error) {
-      if(client.user.tag == "MD BOT Dev#0490") return console.error(error);
         console.log(`오류가 발생했어요.\n ${error}`)
         }
 })
 client.login(token);
 
 exports.playing = function(url, connection, interaction) {
-    //console.log(queue.get(interaction.guild.id))
     const resource = createAudioResource(ytdl(url, {filter: 'audioonly', quality: 'highestaudio', highWaterMark: 1 << 25 }), {highWaterMark: 1})
     const player = queue.get(interaction.guild.id).player
     player.play(resource)
