@@ -3,7 +3,7 @@ const { Routes, Client, GatewayIntentBits, Collection, EmbedBuilder, ActivityTyp
 const { REST } = require('@discordjs/rest');
 const client = new Client({ intents: [GatewayIntentBits.GuildIntegrations, GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.DirectMessages, GatewayIntentBits.DirectMessageReactions, GatewayIntentBits.DirectMessageTyping, GatewayIntentBits.MessageContent], partials: [Partials.Channel, Partials.Message ]});
 client.commands = new Collection();
-const token = "NjgwMDM0ODY0MzMzODQ4NTkz.Xk6B0g.Pw7MDDOYNEICDmF4ReyDdt0dIoo";
+const token = "";
 const ytdl = require("ytdl-core");
 const queue = new Map();
 const fs = require("fs");
