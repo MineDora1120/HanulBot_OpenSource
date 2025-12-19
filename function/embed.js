@@ -1,6 +1,15 @@
 const { EmbedBuilder } = require('discord.js')
 
-exports.musicEmbed = async function(title, thumbnail, url, interaction, client) {
+exports.CreateMusicQueueEmbed = async function(queue, number, symbol, interaction, client)
+{
+    CreateEmbed(`**${symbol} ${queue.name[number]}**`, `${queue.thumbnail[number]}`, `${queue.url[number]}`, interaction, client);
+}
+
+exports.CreateMusicEmbed = CreateEmbed;
+
+
+async function CreateEmbed(title, thumbnail, url, interaction, client) 
+{
     const play = new EmbedBuilder()
     play.setTitle(title)
     play.setColor('Aqua')

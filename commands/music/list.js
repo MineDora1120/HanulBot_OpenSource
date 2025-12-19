@@ -10,7 +10,7 @@ module.exports = {
 
         const embed = new EmbedBuilder();
 
-        embed.setColor("#13ad65")
+        embed.setColor("Aqua")
         embed.setTitle(`**🎵 현재 재생중 : ** ${queue.get(interaction.guild.id).name[0]}`)
         embed.setThumbnail(`${queue.get(interaction.guild.id).thumbnail[0]}`)
         embed.setAuthor({ name : client.user.tag, iconURL : client.user.displayAvatarURL()})

@@ -2,16 +2,18 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     name : "중지",
     slash : new SlashCommandBuilder().setName("중지").setDescription("음악을 중지해요."),
-    async execute(client, interaction, queue) {
-        const embed = new EmbedBuilder()
-        
-        if(queue.get(interaction.guild.id)) {
-            const connection = queue.get(interaction.guild.id).connection;
+    async execute(client, interaction, queue)
+    {
+        if(!queue.get(interaction.guild.id)) 
+        {
+            interaction.editReply("**:warning: __음악이 재생중이지 않아요.__**");
+            return;
+        }
 
-            connection.destroy()
-            queue.delete(interaction.guild.id);
-            return interaction.editReply("**:stop_button: __음악을 중지했어요.__ **")
+        const analyzeQueue = queue.get(interaction.guild.id)
 
-        } else return interaction.editReply("**:warning: __음악이 재생중이지 않아요.__**");
+        analyzeQueue.Stop(true);
+        interaction.editReply("**:stop_button: __음악을 중지했어요.__ **");
+        return;
     }
 }
